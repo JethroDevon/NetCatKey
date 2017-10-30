@@ -1,0 +1,47 @@
+The USB security key protocol is as follows
+
+
+╔════════╦════════════════════════════════════╦════════════════════════════════╗
+║  SEND	 ║	          REPLY		      ║  	   PURPOSE             ║
+╠════════╩════════════════════════════════════╩════════════════════════════════╣
+║                                                                              ║
+║<ping>     "pong"				proof of connection            ║
+║<vrb>      "verbose mode on/off"		verbose output                 ║
+║<lst>      "<ALICE><BOB><CHARLIE><EVE>"	Lists identities to use        ║
+║<ran><[n]> [random number of size n]		returns a secure random number ║
+║<get><name>			 		if name found rtrns pkey       ║
+║<add><name>	     	     		        adds new identity
+║<pop><name>					removes identity
+║<srv><name>					stores credentials
+║<srvusr><name>	       [USERNAME]		returns assoc username
+║<srvpass><name>	       [PASSWORD]		returns assoc password
+║<crt>						creates a new public key
+════════════════════════════════════════════════════════════════════════════
+
+<enc>      <authdata>x<tag>x<cipherdata>x                plain to encrypted data
+
+Sending example:
+
+
+<enc>-recipient-ALICE-/recipient-plaintext-"this is a plain string"-/plaintext-
+-end-encryption<enc>
+
+Recieving Example:
+
+<cipherdata><[cipherdata]><authdata><[authdata]><ciphertext><[ciphertext]>
+
+══════════════════════════════════════════════════════════════════════════════
+
+<dec>		      [decrypted data]			encrypted to plain data
+
+Sending Example:
+
+<dec>-recipient-ALICE-/recipient-<dec>		- recipients identity name
+<dec>-authdata-[auth data]-/authdata<dec>	- length of cipher data etc
+<dec>-tag-[16 bit hash code for ]-/tag-<dec> 	- hash tag based on cipher data
+<dec>-cipherdata-[the cipher data]-/cipherdata-<dec>
+<dec>-end-decryption<dec>			- ends protocol exchange
+
+Recieving Example:
+
+<pass><dec><[plain text]>
