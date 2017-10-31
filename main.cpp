@@ -1,8 +1,11 @@
 #include "KeyCom.cpp"
 
-KeyCom ok;
+KeyCom kc;
 
 int main(int argc, char **argv){
 
-  int fd = ok.Open(argv[1]);
+  int fd = kc.Open(argv[1]);
+  fd = kc.Configure(fd);
+  std::cout << kc.Read( 10, fd);  
+  close(fd);
 }
