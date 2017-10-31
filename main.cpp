@@ -4,5 +4,5 @@ KeyCom ok;
 
 int main(int argc, char **argv){
 
-  std::cout << ok.ReadKey(argv[1]);
+  int fd = ok.Open(argv[1]);
 }
